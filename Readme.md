@@ -19,6 +19,13 @@ First thing's first, update:
 ```
 sudo apt-get update && sudo apt-get -y upgrade
 ```
+## Install python 3.8
+on TK2 the `python3` (3.6) installed is not enough
+```
+sudo add-apt-repository ppa:deadsnakes/ppa
+sudo apt install python3.8-full python3.8-dev
+
+```
 
 ## Install Drivers
 
@@ -42,14 +49,14 @@ Reboot: `sudo reboot now`
 
 ## Install Octoprint
 
-Directly from the guide. Installs latest version:
+Install latest version, make sure to use your install python like above `python3.8`:
 
 ```
 cd ~
 sudo apt update
-sudo apt install python-pip python-dev python-setuptools python-virtualenv git libyaml-dev build-essential
+sudo apt install git libyaml-dev build-essential
 mkdir OctoPrint && cd OctoPrint
-virtualenv venv
+python3.8 -m venv venv
 source venv/bin/activate
 pip install pip --upgrade
 pip install https://get.octoprint.org/latest
@@ -61,7 +68,7 @@ Then exit out of `venv` and start in terminal with:
 ~/OctoPrint/venv/bin/octoprint serve
 ```
 
-Browse to `http://0.0.0.0:5000/`
+Browse to `http://10.82.2.8:5000/`
 
 ## GCODE
 
@@ -180,12 +187,17 @@ cd ~/startup
 ./start_octoprint.sh
 ```
 
-Browse to `Startup Applications` and add these scripts.
+Browse to `Startup Applications` and add these scripts. or
+```
+nano crontab -e
+```
+and add
+```
+@reboot /home/ubuntu/startup/start_octoprint.sh
+@reboot /home/ubuntu/startup/start_motion.sh
+```
 
 ## Conclusion
 
 If everything was successful, issue a reboot. When the server reboots, OctoPrint should be running at `http://0.0.0.0:5000` and a webcam stream should be running at `http://system.ip.address:8080`
 
-## Optional (not tested)
-
-Install NetGear Wifi Drivers : https://ubuntuforums.org/showthread.php?t=1806839
