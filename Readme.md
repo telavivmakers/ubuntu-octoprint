@@ -90,34 +90,32 @@ Browse to http://system.ip.address:8080 (not localhost)
 
 ## System Startup
 
-Create `~/startup`
+its 2023, we are using systemd
+create the following in `/etc/systemd/system/octoprint-deamon.service`
+```
+[Unit]
+Description=Octoprint
+Documentation=https://docs.octoprint.org
+After=network.target
 
-Move `.\config-files\startup\` to `~/startup/`
+[Service]
+User=ubuntu
+Environment=HOME=/home/ubuntu/OctoPrint
+WorkingDirectory=/home/ubuntu/OctoPrint
+ExecStart=/home/ubuntu/OctoPrint/venv/bin/octoprint serve
+Restart=always
+```
+then
+```
+  sudo systemctl daemon-reload
+  sudo systemctl start octoprint.service 
+  sudo systemctl status octoprint.service 
+```
+if all good  
 
-Assign Execute Permissions:
+`sudo systemctl enable motion.service`
 
-```
-chmod u+x ~/startup/start_motion.sh
-chmod u+x ~/startup/start_octoprint.sh
-```
-
-Test with:
-
-```
-cd ~/startup
-./start_motion.sh
-./start_octoprint.sh
-```
-
-Browse to `Startup Applications` and add these scripts. or
-```
-nano crontab -e
-```
-and add
-```
-@reboot /home/ubuntu/startup/start_octoprint.sh
-@reboot /home/ubuntu/startup/start_motion.sh
-```
+motion has it by default
 
 ----
 
