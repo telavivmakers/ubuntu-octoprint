@@ -1,4 +1,4 @@
-# OctoPrint + Motion Ubuntu 18.04 Setup Guide
+# OctoPrint + Motion Ubuntu (on Jetson-TK2) 18.04 Setup Guide
 
 Working in Ubuntu 18.04 LTS
 
@@ -10,7 +10,8 @@ This guide was created because following the original guide lead to some problem
 
 Everything was configured in this order from a fresh desktop installation.
 I chose to autologon my main user because security isn't a real concern here.
-Desktop was chosen over Server because I wanted to use the computer for other clicky pointy things in my garage.
+
+some adaptation for [TAMI](https://wiki.telavivmakers.org) ANAT5 shared printer
 
 ## Updates
 
@@ -69,6 +70,56 @@ Then exit out of `venv` and start in terminal with:
 ```
 
 Browse to `http://10.82.2.8:5000/`
+
+## Motion / Configure Webcam
+
+Install with:
+
+```
+sudo apt-get install motion
+mkdir ~/.motion
+```
+
+Copy `.\config-files\motion.conf` into `~/.motion/`
+
+Reboot: `sudo reboot now`
+
+Start in terminal with: `motion`
+
+Browse to http://system.ip.address:8080 (not localhost)
+
+## System Startup
+
+Create `~/startup`
+
+Move `.\config-files\startup\` to `~/startup/`
+
+Assign Execute Permissions:
+
+```
+chmod u+x ~/startup/start_motion.sh
+chmod u+x ~/startup/start_octoprint.sh
+```
+
+Test with:
+
+```
+cd ~/startup
+./start_motion.sh
+./start_octoprint.sh
+```
+
+Browse to `Startup Applications` and add these scripts. or
+```
+nano crontab -e
+```
+and add
+```
+@reboot /home/ubuntu/startup/start_octoprint.sh
+@reboot /home/ubuntu/startup/start_motion.sh
+```
+
+----
 
 ## GCODE
 
@@ -147,54 +198,6 @@ G28 X0 ; home the X-axis
 M104 S0 ; turn off heaters
 M140 S0 ; turn off bed
 M84 ; disable motors
-```
-
-## Motion / Configure Webcam
-
-Install with:
-
-```
-sudo apt-get install motion
-mkdir ~/.motion
-```
-
-Copy `.\config-files\motion.conf` into `~/.motion/`
-
-Reboot: `sudo reboot now`
-
-Start in terminal with: `motion`
-
-Browse to http://system.ip.address:8080 (not localhost)
-
-## System Startup
-
-Create `~/startup`
-
-Move `.\config-files\startup\` to `~/startup/`
-
-Assign Execute Permissions:
-
-```
-chmod u+x ~/startup/start_motion.sh
-chmod u+x ~/startup/start_octoprint.sh
-```
-
-Test with:
-
-```
-cd ~/startup
-./start_motion.sh
-./start_octoprint.sh
-```
-
-Browse to `Startup Applications` and add these scripts. or
-```
-nano crontab -e
-```
-and add
-```
-@reboot /home/ubuntu/startup/start_octoprint.sh
-@reboot /home/ubuntu/startup/start_motion.sh
 ```
 
 ## Conclusion
