@@ -2,7 +2,7 @@
 
 Working in Ubuntu 18.04 LTS
 
-Original OctoPrint Guide : https://discourse.octoprint.org/t/setting-up-octoprint-on-a-raspberry-pi-running-raspbian/2337
+forked from kevin, how is based on [Guide]([url](https://discourse.octoprint.org/t/setting-up-octoprint-on-a-raspberry-pi-running-raspbian/2337))
 
 ## Description
 
